@@ -1,2 +1,2 @@
 # WebAppDevClass
-All work related with Web Application Development (CMPS - 369) in Spring of 2023
+All work and notes taken in relation with Web Application Development (CMPS - 369) in Spring of 2023
