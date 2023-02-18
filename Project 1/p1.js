@@ -1,3 +1,11 @@
+/*  
+    PROJECT 1 - Static Website
+    Name: SEBASTIAN PROSS
+    Due Date: February 19, 2023
+    Class: Web Application Development
+    Professor: Scott Frees
+*/
+
 const http = require('http');
 const url = require('url');
 
@@ -87,14 +95,12 @@ const fill_standingsHomePage = () => {
 //Home page generation
 const home_page = (res) => {
     const teams_link = '/teams'
-    const demo_site = `https://jaedenalpizar.cargo.site/`;
 
     //Create html based on years array
     const standings_html = fill_standingsHomePage();
 
     const html = heading('Home') + 
-    `<p>Click <a href="${demo_site}">here</a> to look at some cool photos!</p>
-    <p><a href="${teams_link}">Teams</a></p>
+    `<p><a href="${teams_link}">Teams</a></p>
     <section>
         <p>Standings</p>
     `
@@ -148,10 +154,136 @@ const teams_page = (res) => {
     send_page(res, html);
 }
 
-const standings_page = (res) => {
-    const html = heading('Standings') + `
-    <p>Standings page test</p>
-    ` 
+//This function generates the html for the yearly standings table
+const fill_yearlyStandingsPage = (passedYear) => {
+    //Make a new array with the standings of just the requested year
+    const filteredStandings = all_standings.filter(x => x.year == passedYear);
+    const sorted = filteredStandings.sort(function(team1, team2){return Number(team2.wins) - Number(team1.wins)});
+
+    let accumulator_html = '';
+    for(let i = 0; i < sorted.length; i++){
+        let teamData = teams.find(x => x.code == sorted[i].team);
+        let temp = `
+            <tr>
+                <td><img height="75" src="${teamData.logo}"></td>
+                <td>${teamData.city}</td>
+                <td>${teamData.name}</td>
+                <td>${sorted[i].wins}</td>
+                <td>${sorted[i].losses}</td>
+            </tr>
+        `;
+        accumulator_html = accumulator_html + temp;
+    }
+    return accumulator_html;
+}
+
+//Yearly standings page generation
+const standings_page = (res, passedYear) => {
+    const title = 'Standings - ' + passedYear;
+    const html = heading(title) + `
+    <table>
+        <thead>
+            <tr>
+                <th>LOGO</th>
+                <th>CITY</th>
+                <th>NAME</th>
+                <th>WINS</th>
+                <th>LOSSES</th>
+            </tr>
+        </thead>
+
+    `
+    + fill_yearlyStandingsPage(passedYear);
+    + `</table>`
+    + footing();
+
+    send_page(res, html);
+}
+
+//This function generates the html for the league standings table
+const fill_leaguesPage = (passedYear, passedLeague) => {
+    //Make a new array with the standings of just the requested year and league
+    const filteredStandings = all_standings.filter(x => x.year == passedYear && x.league == passedLeague);
+    const sorted = filteredStandings.sort(function(team1, team2){return Number(team2.wins) - Number(team1.wins)});
+
+    let accumulator_html = '';
+    for(let i = 0; i < sorted.length; i++){
+        let teamData = teams.find(x => x.code == sorted[i].team);
+        let temp = `
+            <tr>
+                <td><img height="75" src="${teamData.logo}"></td>
+                <td>${teamData.city}</td>
+                <td>${teamData.name}</td>
+                <td>${sorted[i].wins}</td>
+                <td>${sorted[i].losses}</td>
+            </tr>
+        `;
+        accumulator_html = accumulator_html + temp;
+    }
+    return accumulator_html;
+}
+
+//League standings page generation
+const leagues_page = (res, passedYear, passedLeague) => {
+    const title = 'Standings - ' + passedYear + ' - ' + passedLeague;
+    const html = heading(title) + `
+    <table>
+        <thead>
+            <tr>
+                <th>LOGO</th>
+                <th>CITY</th>
+                <th>NAME</th>
+                <th>WINS</th>
+                <th>LOSSES</th>
+            </tr>
+        </thead>
+    `
+    + fill_leaguesPage(passedYear, passedLeague);
+    + `</table>`
+    + footing();
+
+    send_page(res, html);
+}
+
+const fill_divisionsPage = (passedYear, passedLeague, passedDivision) => {
+    //Make a new array with the standings of just the requested year, league, and division
+    const filteredStandings = all_standings.filter(x => x.year == passedYear && x.league == passedLeague && x.division == passedDivision);
+    const sorted = filteredStandings.sort(function(team1, team2){return Number(team2.wins) - Number(team1.wins)});
+
+    let accumulator_html = '';
+    for(let i = 0; i < sorted.length; i++){
+        let teamData = teams.find(x => x.code == sorted[i].team);
+        let temp = `
+            <tr>
+                <td><img height="75" src="${teamData.logo}"></td>
+                <td>${teamData.city}</td>
+                <td>${teamData.name}</td>
+                <td>${sorted[i].wins}</td>
+                <td>${sorted[i].losses}</td>
+            </tr>
+        `;
+        accumulator_html = accumulator_html + temp;
+    }
+    return accumulator_html;
+}
+
+//Division standings page generation
+const divisions_page = (res, passedYear, passedLeague, passedDivision) => {
+    const title = 'Standings - ' + passedYear + ' - ' + passedLeague + ' - ' + passedDivision;
+    const html = heading(title) + `
+    <table>
+        <thead>
+            <tr>
+                <th>LOGO</th>
+                <th>CITY</th>
+                <th>NAME</th>
+                <th>WINS</th>
+                <th>LOSSES</th>
+            </tr>
+        </thead>
+    `
+    + fill_divisionsPage(passedYear, passedLeague, passedDivision);
+    + `</table>`
     + footing();
 
     send_page(res, html);
@@ -175,13 +307,36 @@ const serve = (req, res) => {
         teams_page(res);
     }
     else if(parts.length >= 2 && parts[0] == 'standings'){
-        standings_page(res);
+        //Determine which standings page to generate, based on the parts size
+
+        if(parts.length == 3){ //Size of parts if we are looking at a specific league
+            if(parts[2] == leagues[0]){
+                leagues_page(res, parts[1], leagues[0]);
+            }
+            if(parts[2] == leagues[1]){
+                leagues_page(res, parts[1], leagues[1]);
+            }
+
+        }
+        else if(parts.length == 4){ //Size of parts if we are looking at a specific division in a league
+            if(parts[3] == divisions[0]){
+                divisions_page(res, parts[1], parts[2], divisions[0]);
+            }
+            if(parts[3] == divisions[1]){
+                divisions_page(res, parts[1], parts[2], divisions[1]);
+            }
+            if(parts[3] == divisions[2]){
+                divisions_page(res, parts[1], parts[2], divisions[2]);
+            }
+        }
+        else{ //If a specific league or division was not requested, then just generate the yearly standings page
+            standings_page(res, parts[1]);
+        }
     }
     else{
         res.writeHead(404);
         res.end();
     }
 }
-
 
 http.createServer(serve).listen(3000);
