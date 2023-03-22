@@ -1,0 +1,20 @@
+extends layout.pug 
+
+block content 
+    a(href='/login') Sign in
+        h1 Contact List
+        a(href='/create') Create a new contact 
+    table
+        thead 
+            tr 
+                th Name 
+                th Phone 
+                th Email 
+                th Address 
+                th Contact
+        tbody 
+            each c in contacts
+                tr
+                    td 
+                        section 
+                            a(href='/')

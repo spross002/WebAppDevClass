@@ -1,0 +1,56 @@
+extends layout.pug
+
+block content 
+    body
+        a(href='/login') Sign in 
+
+        h1 Create Contact
+        
+        form(action='/create' method='post')
+            fieldset
+                legend Basic Info
+                section 
+                    label(for='first') First Name: 
+                    input(name='first')
+                section 
+                    label(for='last') Last Name: 
+                    input(name='last')
+                section 
+                    label(for='phone') Phone: 
+                    input(type ='tel' name ='phone')
+                section 
+                    label(for='email') Email: 
+                    input(type ='email' name ='email')
+
+            fieldset
+                legend Address
+                section 
+                    label(for='street') Street 
+                    input(name='street')
+                section 
+                    label(for='city') City 
+                    input(name='city')
+                section 
+                    label(for='state') State 
+                    input(name='state')
+                section 
+                    label(for='zip') Zip 
+                    input(name='zip')
+                section 
+                    label(for='country') Country 
+                    input(name='country')
+                        
+            fieldset
+                legend Contact Preferences
+                section 
+                    input(type='checkbox' name='contact_by_phone')
+                    label(for='contact_by_phone') Contact by phone
+                section 
+                    input(type='checkbox' name='contact_by_email')
+                    label(for='contact_by_email') Contact by email
+                section 
+                    input(type='checkbox' name='contact_by_mail')
+                    label(for='contact_by_mail') Contact by mail
+            button(type='submit') Add 
+            a(href='/') Cancel
+
