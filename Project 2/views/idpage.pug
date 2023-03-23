@@ -1,0 +1,49 @@
+extends layout.pug 
+
+block content 
+    a(href='/login') Sign in 
+    h1 Contact Info
+    each c in contact
+        h2 #{c.first_name}  #{c.last_name}
+        hr
+        a(href='/') Back to list 
+        p 
+            b Phone number: 
+            span #{c.phone_number} 
+        p 
+            if c.contact_by_phone == 1
+                i  May be contacted by phone or text
+            else 
+                i May NOT be contacted by phone or text
+        p 
+        hr
+        p 
+            b Email Address: 
+            span #{c.email_address} 
+        p 
+            if c.contact_by_email == 1
+                i  May be contacted by email
+            else 
+                i May NOT be contacted by email
+        p
+        hr
+        p 
+            b Address: 
+            br
+            section #{c.street}
+            section 
+                span #{c.city}
+                span , 
+                span #{c.state} 
+                span #{c.zip} 
+            section #{c.country}
+        p 
+            if c.contact_by_mail == 1
+                i  May be contacted by mail
+            else 
+                i May NOT be contacted by mail
+        p
+        hr
+        a(href=c.id+'/edit') Edit contact 
+        br
+        a(href=c.id+'/delete') Delete Contact

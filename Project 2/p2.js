@@ -35,6 +35,14 @@ app.use((req, res, next) => {
     next()
 })
 
+// //Checks to see if the user is there in the database, and creates it if not
+// const adminUsername = 'cmps369';
+// const adminPassword = 'rcnj';
+
+// if(await req.db.findUserByUsername(adminUsername) == undefined){
+//     await req.db.createUser('', '', adminUsername, adminPassword);
+// }
+
 app.set('view engine', 'pug');
 
 app.use('/', require('./routes/accounts'));

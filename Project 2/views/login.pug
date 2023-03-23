@@ -5,10 +5,10 @@ block content
     form(action='/login' method='post')
         section
             label(for='username') Username 
-            input(name='username' required='')
+            input(name='username', required='')
         section
             label(for='password') Password 
-            input(name='password' type='password' required='')
+            input(name='password', type='password' required='')
         button(type='submit') Sign in 
         if message
             p #{message}

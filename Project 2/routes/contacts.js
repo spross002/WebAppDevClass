@@ -10,12 +10,11 @@ const logged_in = (req, res, next) => {
     }
 }
 
-
 //Home page
-router.post('/', async(req, res) => {
+router.get('/', async(req, res) => {
     const userId = req.session.user ? req.session.user.id : -1;
-    const contacts = await req.db.contactsSchema();
-    res.render('/', {contacts: contacts});
+    //res.render('home', {contacts: contacts});
+    res.render('home');
 });
 
 
@@ -24,29 +23,55 @@ router.get('/create', async (req, res) => {
     res.render('create', { hide_login: true });
 });
 
-// router.post('/create', async (req, res) => {
-//     const username = req.body.username.trim();
-//     const p1 = req.body.password.trim();
-//     const p2 = req.body.password2.trim();
-//     if (p1 != p2) {
-//         res.render('create', { hide_login: true, message: 'Passwords do not match!' });
-//         return;
-//     }
+//Create Page Functionality
+router.post('/create', async (req, res) => {
+    const first = req.body.first;
+    const last = req.body.last;
+    const phone = req.body.phone.trim();
+    const email = req.body.email.trim();
+    const street = req.body.street.trim();
+    const city = req.body.city.trim();
+    const state = req.body.state.trim();
+    const zip = req.body.zip.trim();
+    const country = req.body.country.trim();
 
-//     const user = await req.db.findUserByUsername(username);
-//     if (user) {
+    let cPhone = 0;
+    let cEmail = 0;
+    let cMail = 0;
 
-//         res.render('create', { hide_login: true, message: 'This account already exists!' });
-//         return;
-//     }
+    //Checkboxes
+    if(req.body.contact_by_email == 'on'){
+        cEmail = 1;
+    }else{
+        cEmail = 0;
+    }
 
-//     const salt = bcrypt.genSaltSync(10);
-//     const hash = bcrypt.hashSync(p1, salt);
+    if(req.body.contact_by_phone == 'on'){
+        cPhone = 1;
+    }else{
+        cPhone = 0;
+    }
 
-//     const id = await req.db.createUser(username, hash);
-//     req.session.user = await req.db.findUserById(id);
-//     res.redirect('/');
-// });
+    if(req.body.contact_by_mail == 'on'){
+        cMail = 1;
+    }else{
+        cMail = 0;
+    }
 
 
+    const id = await req.db.createContact(first, last, phone, email, street, city, state, zip, country, cEmail, cPhone, cMail);
+    req.session.user = await req.db.findUserById(id);
+    res.redirect('/');
+});
+
+//Singular Contact Page
+router.get('/:id', async (req, res) => {
+    const contact = await req.db.findContactById(req.params.id);
+    res.render('idpage', { contact: contact });
+});
+
+/*
+    IMPORTANT NOTE:
+        USE THE LOGGED_IN FOR THE EDIT AND DELETE CONTACT PAGES
+*/
 module.exports = router;

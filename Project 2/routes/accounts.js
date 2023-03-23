@@ -2,6 +2,12 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 
+router.get('/logout', async (req, res) => {
+    req.session.user = undefined;
+    res.redirect('/');
+});
+
+//Render login page
 router.get('/login', async (req, res) => {
     res.render('login', { hide_login: true });
 });
@@ -25,11 +31,14 @@ router.get('/signup', async (req, res) => {
     res.render('signup', { hide_login: true });
 });
 
-//Render signup when interacted with
+//Signup page functionality
 router.post('/signup', async (req, res) => {
+    const first = req.body.first;
+    const last = req.body.last;
     const username = req.body.username.trim();
     const p1 = req.body.password.trim();
     const p2 = req.body.password2.trim();
+
     if (p1 != p2) {
         res.render('signup', { hide_login: true, message: 'Passwords do not match!' });
         return;
@@ -44,7 +53,7 @@ router.post('/signup', async (req, res) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(p1, salt);
 
-    const id = await req.db.createUser(username, hash);
+    const id = await req.db.createUser(first, last, username, hash);
     req.session.user = await req.db.findUserById(id);
     res.redirect('/');
 });

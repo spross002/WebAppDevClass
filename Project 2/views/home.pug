@@ -2,8 +2,8 @@ extends layout.pug
 
 block content 
     a(href='/login') Sign in
-        h1 Contact List
-        a(href='/create') Create a new contact 
+    h1 Contact List
+    a(href='/create') Create a new contact 
     table
         thead 
             tr 
@@ -12,9 +12,28 @@ block content
                 th Email 
                 th Address 
                 th Contact
-        tbody 
-            each c in contacts
-                tr
-                    td 
-                        section 
-                            a(href='/')
+        //- tbody 
+        //-     each c in contacts
+        //-         tr
+        //-             td 
+        //-                 section 
+        //-                     a(href='/'+c.id) #{c.first_name}
+        //-             td 
+        //-                 section 
+        //-                     #{c.phone_number}
+        //-             td 
+        //-                 section 
+        //-                     #{c.email}
+        //-             td 
+        //-                 section 
+        //-                     #{c.street}
+        //-                     span 
+        //-                         #{c.city}
+        //-                     span ,
+        //-                     span 
+        //-                         #{c.state}
+        //-                     span 
+        //-                         #{c.zip}
+        //-                 section 
+        //-                     #{c.country}
+

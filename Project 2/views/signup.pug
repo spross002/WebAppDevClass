@@ -9,20 +9,20 @@ block content
             |  is just fine by us!
         section 
             label(for='first') First Name 
-            input(name='first' required='')
+            input(name='first', type='text', required='')
         section
             label(for='last') Last Name
-            input(name='last' required='')
+            input(name='last', type='text', required='')
         hr
         section 
             label(for='username') Username
-            input(name='username' required='')
+            input(name='username', required='')
         section 
             label(for='password') Password 
-            input(name='password' type='password' required='')
+            input(name='password', type='password', required='')
         section 
             label(for='password2') Confirm Password 
-            input(name='password2' type='password' required='')
+            input(name='password2', type='password', required='')
         hr
         button(type='submit') Sign up
         if message 
