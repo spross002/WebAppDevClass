@@ -2,7 +2,11 @@ extends layout.pug
 
 block content 
     body
-        a(href='/login') Sign in 
+        if user
+            span #{user.first_name} #{user.last_name}                
+            a(href='/logout')  Sign Out
+        else        
+            a(href='/login') Sign in 
 
         h1 Create Contact
         

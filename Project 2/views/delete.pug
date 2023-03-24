@@ -1,0 +1,17 @@
+extends layout.pug 
+
+block content
+    if user
+        span #{user.first_name} #{user.last_name}                
+        a(href='/logout')  Sign Out
+    else        
+        a(href='/login') Sign in
+
+    h1 Delete Contact 
+    each c in contact
+        h2 #{c.first_name} #{c.last_name} 
+        p 
+            | Are you sure you want to delete this contact? 
+        form(action='/'+c.id+'/delete' method='post')
+            button(type='submit') Yes! 
+            a(href='/'+c.id) Nevermind

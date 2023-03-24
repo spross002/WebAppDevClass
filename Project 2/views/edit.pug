@@ -1,0 +1,70 @@
+extends layout.pug 
+
+block content 
+    body
+        if user
+            span #{user.first_name} #{user.last_name}                
+            a(href='/logout')  Sign Out
+        else        
+            a(href='/login') Sign in
+        h1 Update Contact
+        each c in contact
+            form(action='/'+c.id+'/edit' method='post')
+                fieldset
+                    legend Basic Info
+                    section 
+                        label(for='first') First Name: 
+                        input(name='first' value=c.first_name)
+                    section 
+                        label(for='last') Last Name: 
+                        input(name='last' value=c.last_name)
+                    section 
+                        label(for='phone') Phone: 
+                        input(type ='tel' name ='phone' value=c.phone_number)
+                    section 
+                        label(for='email') Email: 
+                        input(type ='email' name ='email' value=c.email_address)
+
+                fieldset
+                    legend Address
+                    section 
+                        label(for='street') Street 
+                        input(name='street' value=c.street)
+                    section 
+                        label(for='city') City 
+                        input(name='city' value=c.city)
+                    section 
+                        label(for='state') State 
+                        input(name='state' value=c.state)
+                    section 
+                        label(for='zip') Zip 
+                        input(name='zip' value=c.zip)
+                    section 
+                        label(for='country') Country 
+                        input(name='country' value=c.country)
+                            
+                fieldset
+                    legend Contact Preferences
+                    section
+                        if (c.contact_by_phone == 1) 
+                            input(type='checkbox' checked='checked' name='contact_by_phone')
+                            label(for='contact_by_phone') Contact by phone
+                        else 
+                            input(type='checkbox' name='contact_by_phone')
+                            label(for='contact_by_phone') Contact by phone
+                    section 
+                        if (c.contact_by_email == 1)
+                            input(type='checkbox' checked='checked' name='contact_by_email')
+                            label(for='contact_by_email') Contact by email
+                        else
+                            input(type='checkbox' name='contact_by_email')
+                            label(for='contact_by_email') Contact by email
+                    section
+                        if (c.contact_by_mail == 1)
+                            input(type='checkbox' checked='checked' name='contact_by_mail')
+                            label(for='contact_by_mail') Contact by mail
+                        else 
+                            input(type='checkbox' name='contact_by_mail')
+                            label(for='contact_by_mail') Contact by mail
+                button(type='submit') Save 
+                a(href='/'+c.id) Cancel

@@ -1,7 +1,11 @@
 extends layout.pug 
 
 block content 
-    a(href='/login') Sign in
+    if user
+        span #{user.first_name} #{user.last_name}                
+        a(href='/logout')  Sign Out
+    else        
+        a(href='/login') Sign in
     h1 Contact List
     a(href='/create') Create a new contact 
     table
@@ -12,28 +16,42 @@ block content
                 th Email 
                 th Address 
                 th Contact
-        //- tbody 
-        //-     each c in contacts
-        //-         tr
-        //-             td 
-        //-                 section 
-        //-                     a(href='/'+c.id) #{c.first_name}
-        //-             td 
-        //-                 section 
-        //-                     #{c.phone_number}
-        //-             td 
-        //-                 section 
-        //-                     #{c.email}
-        //-             td 
-        //-                 section 
-        //-                     #{c.street}
-        //-                     span 
-        //-                         #{c.city}
-        //-                     span ,
-        //-                     span 
-        //-                         #{c.state}
-        //-                     span 
-        //-                         #{c.zip}
-        //-                 section 
-        //-                     #{c.country}
-
+        tbody 
+            each contact in contacts
+                tr
+                    td
+                        section 
+                            a(href='/'+contact.id) #{contact.first_name} #{contact.last_name}
+                    td 
+                        section #{contact.phone_number}
+                    td 
+                        section #{contact.email_address}
+                    td 
+                        section #{contact.street} 
+                            span #{contact.city}
+                            span , 
+                            span #{contact.state} 
+                            span #{contact.zip}
+                        section  #{contact.country}
+                    td 
+                        section 
+                            if (contact.contact_by_phone == 1)
+                                input(id='phone'+contact.id type='checkbox' disabled='' checked='')
+                                label(for='phone'+contact.id) Phone
+                            else 
+                                input(id='phone'+contact.id type='checkbox' disabled='')
+                                label(for='phone'+contact.id) Phone
+                        section
+                            if (contact.contact_by_email == 1)
+                                input(id='email'+contact.id type='checkbox' disabled='' checked='')
+                                label(for='email'+contact.id) Email
+                            else
+                                input(id='email'+contact.id type='checkbox' disabled='')
+                                label(for='email'+contact.id) Email
+                        section
+                            if (contact.contact_by_mail == 1)
+                                input(id='mail'+contact.id type='checkbox' disabled='' checked='')
+                                label(for='mail'+contact.id) Mail
+                            else 
+                                input(id='mail'+contact.id type='checkbox' disabled='')
+                                label(for='mail'+contact.id) Mail

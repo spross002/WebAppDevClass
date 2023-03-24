@@ -1,5 +1,6 @@
 require('dotenv').config();
 const Database = require('dbcmps369');
+const sqlite = require('sqlite-async');
 
 class ContactDB {
     constructor() {
@@ -34,6 +35,7 @@ class ContactDB {
             { name: 'username', type: 'TEXT' },
             { name: 'password', type: 'TEXT' }
         ], 'id');
+
     }
 
     //Makes a contact
@@ -84,12 +86,43 @@ class ContactDB {
         }
     }
 
+    //Find contact for home page output
+    async findContactHomePage(id) {
+        const fullContact = await this.db.read('Contact', [{ column: 'id', value: id }]);
+        if(fullContact.length > 0) return fullContact;
+        else{
+            return undefined; 
+        }
+    }
+
     //Find contact by ID
     async findContactById(id) {
         const fullContact = await this.db.read('Contact', [{ column: 'id', value: id }]);
         return fullContact;
     }
 
+    //Updates a contact
+    async updateContact(id, first, last, phone, email, street, city, state, zip, country, cEmail, cPhone, cMail) {
+        await this.db.update('Contact', [
+            { column: 'first_name', value: first },
+            { column: 'last_name', value: last },
+            { column: 'phone_number', value: phone },
+            { column: 'email_address', value: email },
+            { column: 'street', value: street },
+            { column: 'city', value: city },
+            { column: 'state', value: state },
+            { column: 'zip', value: zip },
+            { column: 'country', value: country },
+            { column: 'contact_by_email', value: cEmail },
+            { column: 'contact_by_phone', value: cPhone },
+            { column: 'contact_by_mail', value: cMail}
+        ], [{ column: 'id', value: id}]);
+    }
+
+    //Deletes a contact
+    async deleteContact(id){
+        await this.db.delete('Contact', [{ column: 'id', value: id }]);
+    }
 }
 
 module.exports = ContactDB;

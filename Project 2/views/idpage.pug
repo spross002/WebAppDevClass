@@ -1,10 +1,14 @@
 extends layout.pug 
 
 block content 
-    a(href='/login') Sign in 
+    if user
+        span #{user.first_name} #{user.last_name}                
+        a(href='/logout')  Sign Out
+    else        
+        a(href='/login') Sign in 
     h1 Contact Info
     each c in contact
-        h2 #{c.first_name}  #{c.last_name}
+        h2 #{c.first_name} #{c.last_name}
         hr
         a(href='/') Back to list 
         p 
