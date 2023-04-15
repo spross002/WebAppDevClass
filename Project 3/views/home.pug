@@ -1,0 +1,73 @@
+extends layout.pug 
+
+block content
+    .nav(class="navbar navbar-dark bg-dark fixed-top")
+        div(class="container-fluid")
+            if user
+                ul(class="nav navbar-nav navbar-left")
+                    li(class="nav-item")
+                        a(href='/logout')  Sign Out
+                ul(class="nav navbar-nav navbar-right")
+                    span(class="form-inline") #{user.first_name} #{user.last_name}               
+            else 
+                ul(class="nav navbar-nav navbar-left")
+                    li
+                        a(href='/login') Sign in
+
+    .container
+        .row
+            p
+            h1 Contact List
+            .row
+                div(class="d-grid gap-2 d-md-flex justify-content-md-end")
+                    a(class="btn btn-primary me-md-2", href='/create') Create a new contact
+                p
+                .col
+                    .row 
+                        .card(class="text-white bg-dark mb-3")
+                            .card-body
+                                - var n = 0
+                                each contact in contacts
+                                    if n > 0 
+                                        hr
+                                    .ul(class="list-group list-group-horizontal list-group-flush border-0")
+                                        .col
+                                            .li-group
+                                                section 
+                                                    a(href='/'+contact.id) #{contact.first_name} #{contact.last_name}
+                                        .col
+                                            .li-group
+                                                section #{contact.phone_number} 
+                                                section #{contact.email_address}
+                                        .col
+                                            .li-group
+                                                section #{contact.street} 
+                                                    span #{contact.city}
+                                                    span , 
+                                                    span #{contact.state} 
+                                                    span #{contact.zip}
+                                                section  #{contact.country}
+                                        .col
+                                            .li-group 
+                                                section 
+                                                    if (contact.contact_by_phone == 1)
+                                                        input(id='phone'+contact.id type='checkbox' disabled='' checked='')
+                                                        label(for='phone'+contact.id) Phone
+                                                    else 
+                                                        input(id='phone'+contact.id type='checkbox' disabled='')
+                                                        label(for='phone'+contact.id) Phone
+                                                section
+                                                    if (contact.contact_by_email == 1)
+                                                        input(id='email'+contact.id type='checkbox' disabled='' checked='')
+                                                        label(for='email'+contact.id) Email
+                                                    else
+                                                        input(id='email'+contact.id type='checkbox' disabled='')
+                                                        label(for='email'+contact.id) Email
+                                                section
+                                                    if (contact.contact_by_mail == 1)
+                                                        input(id='mail'+contact.id type='checkbox' disabled='' checked='')
+                                                        label(for='mail'+contact.id) Mail
+                                                    else 
+                                                        input(id='mail'+contact.id type='checkbox' disabled='')
+                                                        label(for='mail'+contact.id) Mail
+                                    - n++

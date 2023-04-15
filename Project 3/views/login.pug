@@ -1,0 +1,30 @@
+extends layout.pug 
+
+block content 
+    .container
+        h1 Sign in
+        .row 
+            .col
+                .card(class="text-white bg-dark mb-3")
+                    .card-body
+                        form(action='/login' method='post').form
+                            .form-group
+                                label(for='username') Username 
+                                input.form-control(name='username', required='')
+                            .form-group
+                                label(for='password') Password 
+                                input.form-control(name='password', type='password' required='')
+                                p 
+                            .form-group
+                                .row
+                                    .col
+                                        button(type="submit", class="btn btn-success", href="/") Sign in
+                                    .col
+                                        a(class="btn btn-danger float-end", href='/', role="button") Nevermind
+        if message
+            .alert.alert-danger(class="text-center")
+                i(class="bi bi-exclamation-triangle-fill me-3 justify-content-center")  #{message}     
+
+        p
+        | Don't have an account yet?  
+        a(class="btn btn-info", href='/signup', role="button") Sign up here!

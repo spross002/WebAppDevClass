@@ -1,0 +1,45 @@
+extends layout.pug
+
+block content
+    .container
+        h1 Sign Up
+        .row 
+            .col
+                .card(class="text-white bg-dark mb-3")
+                    .card-body
+                        form(action='/signup', method='post').form
+                            .form-group
+                                p 
+                                    | Please select a username, and a password. Don't worry about any password rules here, we dont really care much about protecting your information - so 
+                                    code helloworld
+                                    |  is just fine by us!
+                            hr
+                            .form-group 
+                                label(for='first') First Name 
+                                input.form-control(name='first', type='text', required='')
+                            .form-group
+                                label(for='last') Last Name
+                                input.form-control(name='last', type='text', required='')
+                            hr
+                            .form-group 
+                                label(for='username') Username
+                                input.form-control(name='username', required='')
+                            .form-group 
+                                label(for='password') Password 
+                                input.form-control(name='password', type='password', required='')
+                            .form-group 
+                                label(for='password2') Confirm Password 
+                                input.form-control(name='password2', type='password', required='')
+                                p
+                            .form-group
+                                .row 
+                                    .col
+                                        button(type='submit', class="btn btn-success") Sign up
+                                    .col 
+                                        a(class="btn btn-danger float-end", href='/', role="button") Nevermind
+        if message
+            .alert.alert-danger(class="text-center")
+                i(class="bi bi-exclamation-triangle-fill me-3 justify-content-center")  #{message} 
+        p 
+        | Already have an account? 
+        a(class="btn btn-info", href='/login', role="button") Sign in here!

@@ -1,0 +1,84 @@
+extends layout.pug 
+
+block content 
+    body
+        .nav(class="navbar navbar-dark bg-dark fixed-top")
+            div(class="container-fluid")
+                if user
+                    ul(class="nav navbar-nav navbar-left")
+                        li(class="nav-item")
+                            a(href='/logout')  Sign Out
+                    ul(class="nav navbar-nav navbar-right")
+                        span(class="form-inline") #{user.first_name} #{user.last_name}               
+                else 
+                    ul(class="nav navbar-nav navbar-left")
+                        li
+                            a(href='/login') Sign in
+        .container
+            h1 Update Contact
+            .row 
+                .col
+                    .card(class="text-white bg-dark mb-3")
+                        .card-body
+                            each c in contact
+                                form(action='/'+c.id+'/edit' method='post').form
+                                    .form-group
+                                        legend Basic Info
+                                        section 
+                                            label(for='first') First Name: 
+                                            input.form-control(name='first' value=c.first_name)
+                                        section 
+                                            label(for='last') Last Name: 
+                                            input.form-control(name='last' value=c.last_name)
+                                        section 
+                                            label(for='phone') Phone: 
+                                            input.form-control(type ='tel' name ='phone' value=c.phone_number)
+                                        section 
+                                            label(for='email') Email: 
+                                            input.form-control(type ='email' name ='email' value=c.email_address)
+
+                                    .form-group
+                                        legend Address
+                                        section 
+                                            label(for='street') Street 
+                                            input.form-control(name='street' value=c.street)
+                                        section 
+                                            label(for='city') City 
+                                            input.form-control(name='city' value=c.city)
+                                        section 
+                                            label(for='state') State 
+                                            input.form-control(name='state' value=c.state)
+                                        section 
+                                            label(for='zip') Zip 
+                                            input.form-control(name='zip' value=c.zip)
+                                        section 
+                                            label(for='country') Country 
+                                            input.form-control(name='country' value=c.country)
+                                                
+                                    .form-group
+                                        legend Contact Preferences
+                                        section
+                                            if (c.contact_by_phone == 1) 
+                                                input(type='checkbox' checked='checked' name='contact_by_phone')
+                                                label(for='contact_by_phone') Contact by phone
+                                            else 
+                                                input(type='checkbox' name='contact_by_phone')
+                                                label(for='contact_by_phone') Contact by phone
+                                        section 
+                                            if (c.contact_by_email == 1)
+                                                input(type='checkbox' checked='checked' name='contact_by_email')
+                                                label(for='contact_by_email') Contact by email
+                                            else
+                                                input(type='checkbox' name='contact_by_email')
+                                                label(for='contact_by_email') Contact by email
+                                        section
+                                            if (c.contact_by_mail == 1)
+                                                input(type='checkbox' checked='checked' name='contact_by_mail')
+                                                label(for='contact_by_mail') Contact by mail
+                                            else 
+                                                input(type='checkbox' name='contact_by_mail')
+                                                label(for='contact_by_mail') Contact by mail
+                                    p 
+                                    div(class="d-grid gap-2 d-md-flex justify-content-md-start")
+                                        button(class="btn btn-primary me-md-2", type='submit', role="button") Save 
+                                        a(class="btn btn-danger", href='/'+c.id, role="button") Cancel

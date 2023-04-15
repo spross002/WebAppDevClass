@@ -1,0 +1,68 @@
+extends layout.pug 
+
+block content
+    .nav(class="navbar navbar-dark bg-dark fixed-top")
+        div(class="container-fluid")
+            if user
+                ul(class="nav navbar-nav navbar-left")
+                    li(class="nav-item")
+                        a(href='/logout')  Sign Out
+                ul(class="nav navbar-nav navbar-right")
+                    span(class="form-inline") #{user.first_name} #{user.last_name}               
+            else 
+                ul(class="nav navbar-nav navbar-left")
+                    li
+                        a(href='/login') Sign in
+    .container
+
+    .container
+        h1 Contact Info
+        .row 
+            .col 
+                .card(class="text-white bg-dark mb-3")
+                    .card-body
+                        each c in contact
+                            h2 #{c.first_name} #{c.last_name}
+                            a(class="btn btn-primary", href='/', role="button") Back to list 
+                            hr
+                            p 
+                                b Phone number: 
+                                span #{c.phone_number} 
+                            p 
+                                if c.contact_by_phone == 1
+                                    i  May be contacted by phone or text
+                                else 
+                                    i May NOT be contacted by phone or text
+                            p 
+                            hr
+                            p 
+                                b Email Address: 
+                                span #{c.email_address} 
+                            p 
+                                if c.contact_by_email == 1
+                                    i  May be contacted by email
+                                else 
+                                    i May NOT be contacted by email
+                            p
+                            hr
+                            p 
+                                b Address: 
+                                br
+                                section #{c.street}
+                                section 
+                                    span #{c.city}
+                                    span , 
+                                    span #{c.state} 
+                                    span #{c.zip} 
+                                section #{c.country}
+                            p 
+                                if c.contact_by_mail == 1
+                                    i  May be contacted by mail
+                                else 
+                                    i May NOT be contacted by mail
+                            p
+                            hr
+                            div(class="d-grid gap-2 d-md-flex justify-content-md-start")
+                                a(class="btn btn-info me-md-2", href=c.id+'/edit', role="button") Edit contact 
+                                br
+                                a(class="btn btn-danger", href=c.id+'/delete', role="button") Delete Contact

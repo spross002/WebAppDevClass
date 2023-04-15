@@ -1,0 +1,32 @@
+extends layout.pug 
+
+block content
+    .nav(class="navbar navbar-dark bg-dark fixed-top")
+        div(class="container-fluid")
+            if user
+                ul(class="nav navbar-nav navbar-left")
+                    li(class="nav-item")
+                        a(href='/logout')  Sign Out
+                ul(class="nav navbar-nav navbar-right")
+                    span(class="form-inline") #{user.first_name} #{user.last_name}               
+            else 
+                ul(class="nav navbar-nav navbar-left")
+                    li
+                        a(href='/login') Sign in
+    .container
+
+    .container
+        h1 Delete Contact
+        .row 
+            .col
+                .card(class="text-white bg-dark mb-3")
+                    .card-body
+                        each c in contact
+                            h2 #{c.first_name} #{c.last_name} 
+                            p 
+                                | Are you sure you want to delete this contact? 
+                            form(action='/'+c.id+'/delete' method='post').form
+                                .form-group
+                                    div(class="d-grid gap-2 d-md-flex justify-content-md-start")
+                                        button(class="btn btn-danger me-md-2", type='submit') Delete 
+                                        a(class="btn btn-success", href='/'+c.id, role="button") Nevermind
