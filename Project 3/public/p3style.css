@@ -1,0 +1,22 @@
+body { 
+    padding-top: 40px; 
+    background-color: #0d1117;
+    color: white;
+}
+
+.navbar {
+    border-bottom-color: gray;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: gray;
+}
+
+.navbar span {
+    color: rgb(255, 255, 255);
+}
+
+.card {
+    border-color: gray;
+}
