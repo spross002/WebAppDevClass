@@ -1,0 +1,16 @@
+#map-container {
+    position:relative;  /* important. */
+    height:700px; /* pick whatever height you think is nice. */
+    margin-bottom:5rem; /*  change as you wish */
+}
+
+#map { /* This is required as-is. */
+    position: absolute; 
+    top: 0; 
+    bottom: 0; 
+    width: 100%;
+}
+
+tr {
+    cursor: pointer;
+}
